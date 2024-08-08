@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pameran Virtual Dispussip</title>
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+      crossorigin="anonymous"
+    ></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+      integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&family=Dancing+Script:wght@400..700&family=Mooli&display=swap" rel="stylesheet">
+
+    <style>
+body {
+  background: url('/asset/bg.svg') no-repeat center center fixed;
+  background-size: cover;
+}
+
+      /* Gaya CSS tambahan */
+      .nav-item:hover .nav-link {
+        text-decoration: underline;
+      }
+
+      .profile-info {
+        display: none;
+        position: absolute;
+        top: 40px;
+        right: 0;
+        background-color: #fff;
+        border: 1px solid #ccc;
+        padding: 10px;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        z-index: 1;
+      }
+
+      .nav-item .profile:hover .profile-info {
+        display: block;
+      }
+
+      .profile-info a {
+        text-decoration: none;
+        color: #333;
+        display: block;
+      }
+
+      .profile-info a:hover {
+        text-decoration: underline;
+      }
+      .profile-info p {
+        margin: 5px 0;
+        color: #333;
+      }
+
+      .icon.user.outline {
+        color: black;
+      }
+
+      .hidden {
+        display: none;
+      }
+      
+      #selectedCategories .btn {
+        border-radius: 15px;
+      }
+
+      .grow-card {
+      transition: transform 0.3s ease;
+    }
+
+    .grow-card:hover {
+      transform: scale(1.05);
+    }
+
+      .card-img-top {
+      height: 170px;
+      object-fit: cover;
+      border-top-left-radius: 15px;
+      border-top-right-radius: 15px;
+    }
+    .card-date {
+      position: absolute;
+      top: -90px;
+      right: 10px;
+      color: red;
+      background-color: white;
+      padding: 2px 10px;
+      border-radius: 5px;
+      text-align: center;
+    }
+    .card-date h5 {
+      margin: 0;
+      font-size: 24px;
+    }
+    .card-date p {
+      margin: 0;
+      font-size: 14px;
+    }
+    .card-body {
+      position: relative;
+    }
+    .location-badge {
+      width: 100%;
+      position: absolute;
+      top: -29px;
+      left: 0;
+      background-color: red;
+      color: white;
+      padding: 5px 10px;
+    }
+    .price-badge {
+      background-color: red;
+      color: white;
+      padding: 5px 5px;
+      width: 70%;
+      border-radius: 40px;
+      display: inline-block;
+    }
+    @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&family=Dancing+Script:wght@400..700&family=Mooli&display=swap');
+
+    .font-judul{
+      font-family: "Mooli", sans-serif;
+      font-weight: 400;
+      font-style: normal;
+      text-align: center;
+      
+    }
+
+    @media (max-width: 987px) {
+      .navbar-brand img{
+        width: 50px;
+        height: 70px;
+      }
+
+      .navbar-brand {
+        padding: 0.2rem;
+      }
+
+      .card-mobile {
+        padding-top: 10%;
+      }
+
+    #eventCards .card {
+      width: calc(50% - 60px); /* Menghitung lebar card agar mempertahankan bentuknya */
+      margin-right: 0px;
+      margin-left: 0px;
+    }
+
+    #eventCards .card:first-child {
+      margin-left: 0;
+    }
+
+    #eventCards .card:last-child {
+      margin-right: 0;
+    }
+}
+
+    #selectedCategories .badge.bg-secondary {
+      font-size: 0.8rem; /* Menambah ukuran font */
+      padding: 5px 10px; /* Menambah padding */
+      border-radius: 15px; /* Menyamakan border radius dengan tombol filter */
+      background-color: #13005a; /* Menyamakan background color dengan tombol filter */
+      color: white; /* Menyamakan warna teks dengan tombol filter */
+      margin: 2px; /* Menambahkan margin antar tombol */
+    }
+
+    #footer {
+          background-color: red;
+          color: white;
+          padding: 2rem 0;
+      }
+      #footer .footer-col {
+          margin-bottom: 1rem;
+      }
+      #footer .footer-col h6 {
+          font-weight: bold;
+          color: white;
+      }
+      #footer .footer-col ul {
+          list-style: none;
+          padding: 0;
+      }
+      #footer .footer-col ul li {
+          margin-bottom: 0.5rem;
+      }
+      #footer .footer-col ul li a {
+          color: white;
+          text-decoration: none;
+      }
+      #footer .footer-col ul li a:hover {
+          text-decoration: underline;
+      }
+      #footer .social-icons i {
+          font-size: 1.5rem;
+          margin-right: 0.5rem;
+          color: white;
+      }
+      #footer .app-buttons img {
+          height: 40px;
+          margin-right: 0.5rem;
+      }
+      #footer .footer-bottom {
+          border-top: 1px solid #dee2e6;
+          padding-top: 1rem;
+          margin-top: 1rem;
+          text-align: center;
+      }
+      #footer .footer-logo {
+          max-width: 150px;
+          height: auto;
+      }
+      .gradient-nav {
+  background: linear-gradient(to bottom right, #ff4d4d, #ffffff);
+}
+    </style>
+  </head>
+
+  <body>
+  <!-- Navbar untuk Desktop -->
+  <nav class="navbar fixed-top py-2 gradient-nav">
+    <div class="container d-flex align-items-center position-relative">
+      <a class="navbar-brand" href="#">
+        <img src="/asset/logo-lamtim.png" alt="logo-lamtim" width="80" />
+      </a>
+      <div class="font-judul position-absolute w-100 text-center ps-3">
+        <h3 class="fw-bold">Pameran Kearsipan Virtual <br> Kabupaten Lampung Timur <br> Tahun 2024</h3>
+      </div>
+    </div>
+  </nav>
+  
+
+    <!-- Container parent yang menempati seluurh width layar device -->
+    <main class="card-mobile container-fluid" style="margin-top: 10%">
+      <div class="container">
+        <h1>Jumlah Kunjungan: <span id="visitCount">0</span></h1>
+        <div class="row">
+          <div class="col-12">
+
+        <!-- List card yang ditampilkan dengan format row | Tiap baris memuat 4 card-->
+        <div id="eventCards" class="row d-flex flex-wrap">
+
+          <!-- Card baris ke-1 -->
+          <div class="col-md-3 col-sm-6 mt-3 mb-3 finance">
+            <div class="card shadow grow-card" style="width: 100%; border-radius: 15px;">
+              <img src="/asset/1.jpg" class="mb-3" alt="Event Image" height="280px" data-bs-toggle="modal" data-bs-target="#imageModal1">
+              <div class="card-body">
+                <div class="location-badge">
+                  <i class="bi bi-geo-alt"></i> Lampung Timur
+                </div>
+                <h5 class="card-title py-2" style="margin-top: -3%;">Bupati dan Wakil Bupati Lampung Timur</h5>
+                <p class="price-badge d-flex justify-content-center">Periode 2021 - 2026</p>
+                <p class="card-text text-secondary">Lampung Timur</p>
+              </div>
+            </div>
+          </div>
+        
+          <!-- Card baris ke-2 -->
+          <div class="col-md-3 col-sm-6 mt-3 mb-3 finance">
+            <div class="card shadow grow-card" style="width: 100%; border-radius: 15px;">
+              <img src="/asset/2.jpg" class="mb-3" alt="Event Image" height="257px" data-bs-toggle="modal" data-bs-target="#imageModal2">
+              <div class="card-body">
+                <div class="location-badge">
+                  <i class="bi bi-geo-alt"></i> Lampung Timur
+                </div>
+                <h5 class="card-title py-2" style="margin-top: -3%;">Topologi Rumah Adat Kampung Wana di Lampung Timur</h5>
+                <p class="price-badge d-flex justify-content-center">Rumah Adat</p>
+                <p class="card-text text-secondary">Sukadana, Lampung Timur</p>
+              </div>
+            </div>
+          </div>
+        
+          <!-- Card baris ke-3 -->
+          <div class="col-md-3 col-sm-6 mt-3 mb-3 finance">
+            <div class="card shadow grow-card" style="width: 100%; border-radius: 15px;">
+              <img src="/asset/3.jpg" class="mb-3" alt="Event Image" data-bs-toggle="modal" data-bs-target="#imageModal3">
+              <div class="card-body">
+                <div class="location-badge">
+                  <i class="bi bi-geo-alt"></i> Lampung Timur
+                </div>
+                <h5 class="card-title py-2" style="margin-top: -3%;">Situs Taman Purbakala Pugung Raharjo, Dari Tingalan  Pra-Sejara di Lampung Timur</h5>
+                <p class="price-badge d-flex justify-content-center">Situs Purbakala</p>
+                <p class="card-text text-secondary">Pugung Raharjo, Lampung Timur</p>
+              </div>
+            </div>
+          </div>
+        
+          <!-- Card baris ke-4 -->
+          <div class="col-md-3 col-sm-6 mt-3 mb-3 finance">
+            <div class="card shadow grow-card" style="width: 100%; border-radius: 15px;">
+              <img src="/asset/8.jpg" class="mb-3" alt="Event Image" height="300px" data-bs-toggle="modal" data-bs-target="#imageModal8">
+              <div class="card-body">
+                <div class="location-badge">
+                  <i class="bi bi-geo-alt"></i> Lampung Timur
+                </div>
+                <h5 class="card-title py-2" style="margin-top: -3%;">KH Ahmad Hanafiah</h5>
+                <p class="price-badge d-flex justify-content-center">Pahlawan LamTim</p>
+                <p class="card-text text-secondary">Sukadana, Lampung Timur</p>
+              </div>
+            </div>
+          </div>
+        
+          <!-- Card baris ke-5 -->
+          <div class="col-md-3 col-sm-6 mt-3 mb-3 finance">
+            <div class="card shadow grow-card" style="width: 100%; border-radius: 15px;">
+              <img src="/asset/5.jpg" class="mb-3" alt="Event Image" data-bs-toggle="modal" data-bs-target="#imageModal5">
+              <div class="card-body">
+                <div class="location-badge mt-2">
+                  <i class="bi bi-geo-alt"></i> Lampung Timur
+                </div>
+                <h5 class="card-title py-2" style="margin-top: -3%;">Ketut Erawan S.H</h5>
+                <p class="price-badge d-flex justify-content-center">Pahlawan LamTim</p>
+                <p class="card-text text-secondary">Sukadana, Lampung Timur</p>
+              </div>
+            </div>
+          </div>
+        
+          <!-- Card baris ke-6 -->
+          <div class="col-md-3 col-sm-6 mt-3 mb-3 finance">
+            <div class="card shadow grow-card" style="width: 100%; border-radius: 15px;">
+              <img src="/asset/6.jpg" class="mb-3" alt="Event Image" data-bs-toggle="modal" data-bs-target="#imageModal6">
+              <div class="card-body">
+                <div class="location-badge mt-2">
+                  <i class="bi bi-geo-alt"></i> Lampung Timur
+                </div>
+                <h5 class="card-title py-2" style="margin-top: -3%;">Ismail Sanjaya</h5>
+                <p class="price-badge d-flex justify-content-center">Pahlawan LamTim</p>
+                <p class="card-text text-secondary">Sukadana, Lampung Timur</p>
+              </div>
+            </div>
+          </div>
+        
+          <!-- Card baris ke-7 -->
+          <div class="col-md-3 col-sm-6 mt-3 mb-3 finance">
+            <div class="card shadow grow-card" style="width: 100%; border-radius: 15px;">
+              <img src="/asset/7.jpg" class="mb-3" alt="Event Image" data-bs-toggle="modal" data-bs-target="#imageModal7">
+              <div class="card-body">
+                <div class="location-badge">
+                  <i class="bi bi-geo-alt"></i> Lampung Timur
+                </div>
+                <h5 class="card-title py-2" style="margin-top: -3%;">Mangku Ratu Sanjaya (Suttan Syech Adafhi)</h5>
+                <p class="price-badge d-flex justify-content-center">Pahlawan LamTim</p>
+                <p class="card-text text-secondary">Sukadana, Lampung Timur</p>
+              </div>
+            </div>
+          </div>
+        
+          <!-- Card baris ke-8 -->
+          <div class="col-md-3 col-sm-6 mt-3 mb-3 finance">
+            <div class="card shadow grow-card" style="width: 100%; border-radius: 15px;">
+              <img src="/asset/4.jpg" class="mb-3" alt="Event Image" data-bs-toggle="modal" data-bs-target="#imageModal4">
+              <div class="card-body">
+                <div class="location-badge">
+                  <i class="bi bi-geo-alt"></i> Lampung Timur
+                </div>
+                <h5 class="card-title py-2" style="margin-top: -3%;">Arifin Raden Imba</h5>
+                <p class="price-badge d-flex justify-content-center">Pahlawan LamTim</p>
+                <p class="card-text text-secondary">Sukadana, Lampung Timur</p>
+              </div>
+            </div>
+          </div>
+        
+          <!-- Card baris ke-9 -->
+          <div class="col-md-3 col-sm-6 mt-3 mb-3 finance">
+            <div class="card shadow grow-card" style="width: 100%; border-radius: 15px;">
+              <img src="/asset/9.jpg" class="mb-3" alt="Event Image" data-bs-toggle="modal" data-bs-target="#imageModal9">
+              <div class="card-body">
+                <div class="location-badge">
+                  <i class="bi bi-geo-alt"></i> Lampung Timur
+                </div>
+                <h5 class="card-title py-2" style="margin-top: -3%;">Letnan Adnan Sanjaya</h5>
+                <p class="price-badge d-flex justify-content-center">Pahlawan LamTim</p>
+                <p class="card-text text-secondary">Sukadana, Lampung Timur</p>
+              </div>
+            </div>
+          </div>
+        
+          <!-- Card baris ke-10 -->
+          <div class="col-md-3 col-sm-6 mt-3 mb-3 finance">
+            <div class="card shadow grow-card" style="width: 100%; border-radius: 15px;">
+              <img src="/asset/10.jpg" class="mb-3" alt="Event Image" data-bs-toggle="modal" data-bs-target="#imageModal10">
+              <div class="card-body">
+                <div class="location-badge">
+                  <i class="bi bi-geo-alt"></i> Lampung Timur
+                </div>
+                <h5 class="card-title py-2" style="margin-top: -3%;">Zainaboen Djajasinga</h5>
+                <p class="price-badge d-flex justify-content-center">Pahlawan LamTim</p>
+                <p class="card-text text-secondary">Sukadana, Lampung Timur</p>
+              </div>
+            </div>
+          </div>
+        
+          <!-- Card baris ke-11 -->
+          <div class="col-md-3 col-sm-6 mt-3 mb-3 finance">
+            <div class="card shadow grow-card" style="width: 100%; border-radius: 15px;">
+              <img src="/asset/11.jpg" class="mb-3" alt="Event Image" height="457px" data-bs-toggle="modal" data-bs-target="#imageModal11">
+              <div class="card-body">
+                <div class="location-badge">
+                  <i class="bi bi-geo-alt"></i> Lampung Timur
+                </div>
+                <h5 class="card-title py-2" style="margin-top: -3%;">Taman Nasional Way Kambas</h5>
+                <p class="price-badge d-flex justify-content-center">Taman Nasional</p>
+                <p class="card-text text-secondary">Way Kambas, Lampung Timur</p>
+              </div>
+            </div>
+          </div>
+        
+          <!-- Card baris ke-12 -->
+          <div class="col-md-3 col-sm-6 mt-3 mb-3 finance">
+            <div class="card shadow grow-card" style="width: 100%; border-radius: 15px;">
+              <img src="/asset/12.jpg" class="mb-3" alt="Event Image" height="433px" data-bs-toggle="modal" data-bs-target="#imageModal12">
+              <div class="card-body">
+                <div class="location-badge">
+                  <i class="bi bi-geo-alt"></i> Lampung Timur
+                </div>
+                <h5 class="card-title py-2" style="margin-top: -3%;">Situs Arkeologi Pugung Raharjo</h5>
+                <p class="price-badge d-flex justify-content-center">Situs Pra-Sejarah</p>
+                <p class="card-text text-secondary">Pugung Raharjo, Lampung Timur</p>
+              </div>
+            </div>
+          </div>
+        
+          <!-- Card baris ke-13 -->
+          <div class="col-md-3 col-sm-6 mt-3 mb-3 finance">
+            <div class="card shadow grow-card" style="width: 100%; border-radius: 15px;">
+              <img src="/asset/13.jpg" class="mb-3" alt="Event Image" height="278px" data-bs-toggle="modal" data-bs-target="#imageModal13">
+              <div class="card-body">
+                <div class="location-badge">
+                  <i class="bi bi-geo-alt"></i> Lampung Timur
+                </div>
+                <h5 class="card-title py-2" style="margin-top: -3%;">Peresmian KODIM 0429 Lampung Timur</h5>
+                <p class="price-badge d-flex justify-content-center">Kantor Daerah</p>
+                <p class="card-text text-secondary">Lampung Timur</p>
+              </div>
+            </div>
+          </div>
+        
+          <!-- Card baris ke-14 -->
+          <div class="col-md-3 col-sm-6 mt-3 mb-3 finance">
+            <div class="card shadow grow-card" style="width: 100%; border-radius: 15px;">
+              <img src="/asset/14.jpg" class="mb-3" alt="Event Image" height="278px" data-bs-toggle="modal" data-bs-target="#imageModal14">
+              <div class="card-body">
+                <div class="location-badge">
+                  <i class="bi bi-geo-alt"></i> Lampung Timur
+                </div>
+                <h5 class="card-title py-2" style="margin-top: -3%;">Pembukaan Hutan dan Lahan oleh N.V Sukadana</h5>
+                <p class="price-badge d-flex justify-content-center">Pembukaan Lahan</p>
+                <p class="card-text text-secondary">Sukadana, Lampung Timur</p>
+              </div>
+            </div>
+          </div>
+        
+          <!-- Card baris ke-15 -->
+          <div class="col-md-3 col-sm-6 mt-3 mb-3 finance">
+            <div class="card shadow grow-card" style="width: 100%; border-radius: 15px;">
+              <img src="/asset/15.jpg" class="mb-3" alt="Event Image" height="230px" data-bs-toggle="modal" data-bs-target="#imageModal15">
+              <div class="card-body">
+                <div class="location-badge">
+                  <i class="bi bi-geo-alt"></i> Lampung Timur
+                </div>
+                <h5 class="card-title py-2" style="margin-top: -3%;">Penyambutan Moh. Hatta oleh Pemimpin Sukadana dalam Peninjauan Daerah Transmigrasi</h5>
+                <p class="price-badge d-flex justify-content-center">Kunjungan Moh. Hatta</p>
+                <p class="card-text text-secondary">Sumatera Selatan</p>
+              </div>
+            </div>
+          </div>
+        
+          <!-- Card baris ke-16 -->
+          <div class="col-md-3 col-sm-6 mt-3 mb-3 finance">
+            <div class="card shadow grow-card" style="width: 100%; border-radius: 15px;">
+              <img src="/asset/16.jpg" class="mb-3" alt="Event Image" height="302px" data-bs-toggle="modal" data-bs-target="#imageModal16">
+              <div class="card-body">
+                <div class="location-badge">
+                  <i class="bi bi-geo-alt"></i> Lampung Timur
+                </div>
+                <h5 class="card-title py-2" style="margin-top: -3%;">Foto Pengantin di Lampung</h5>
+                <p class="price-badge d-flex justify-content-center">Pakaian Adat</p>
+                <p class="card-text text-secondary">Lampung</p>
+              </div>
+            </div>
+          </div>
+        
+          <!-- Card baris ke-17 -->
+          <div class="col-md-3 col-sm-6 mt-3 mb-3 finance">
+            <div class="card shadow grow-card" style="width: 100%; border-radius: 15px;">
+              <img src="/asset/17.jpg" class="mb-3" alt="Event Image" data-bs-toggle="modal" data-bs-target="#imageModal17">
+              <div class="card-body">
+                <div class="location-badge">
+                  <i class="bi bi-geo-alt"></i> Lampung Timur
+                </div>
+                <h5 class="card-title py-2" style="margin-top: -3%;">Seorang Wanita dengan Pakaian Adat</h5>
+                <p class="price-badge d-flex justify-content-center">Pakaian Adat</p>
+                <p class="card-text text-secondary">Sukadana, Lampung Timur</p>
+              </div>
+            </div>
+          </div>
+        
+          <!-- Card baris ke-18 -->
+          <div class="col-md-3 col-sm-6 mt-3 mb-3 finance">
+            <div class="card shadow grow-card" style="width: 100%; border-radius: 15px;">
+              <img src="/asset/18.jpg" class="mb-3" alt="Event Image" height="428px" data-bs-toggle="modal" data-bs-target="#imageModal18">
+              <div class="card-body">
+                <div class="location-badge">
+                  <i class="bi bi-geo-alt"></i> Lampung Timur
+                </div>
+                <h5 class="card-title py-2" style="margin-top: -3%;">Penyerahan Buku Citra Lampung Timur oleh ANRI Kepada Bupati Lampung Timur</h5>
+                <p class="price-badge d-flex justify-content-center">Arsip Daerah</p>
+                <p class="card-text text-secondary">Sukadana, Lampung Timur</p>
+              </div>
+            </div>
+          </div>
+        
+        </div>
+    </main>
+
+    <!-- Modal untuk Foto 1 -->
+<div class="modal fade" id="imageModal1" tabindex="-1" aria-labelledby="imageModalLabel1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="imageModalLabel1">Gambar 1</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <img src="/asset/1.jpg" class="img-fluid" alt="Event Image">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal untuk Foto 2 -->
+<div class="modal fade" id="imageModal2" tabindex="-1" aria-labelledby="imageModalLabel2" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="imageModalLabel2">Gambar 2</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <img src="/asset/2.jpg" class="img-fluid" alt="Event Image">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal untuk Foto 3 -->
+<div class="modal fade" id="imageModal3" tabindex="-1" aria-labelledby="imageModalLabel3" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="imageModalLabel3">Gambar 3</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <img src="/asset/3.jpg" class="img-fluid" alt="Event Image">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal untuk Foto 4 -->
+<div class="modal fade" id="imageModal4" tabindex="-1" aria-labelledby="imageModalLabel4" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="imageModalLabel4">Gambar 4</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <img src="/asset/4.jpg" class="img-fluid" alt="Event Image">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal untuk Foto 5 -->
+<div class="modal fade" id="imageModal5" tabindex="-1" aria-labelledby="imageModalLabel5" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="imageModalLabel5">Gambar 5</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <img src="/asset/5.jpg" class="img-fluid" alt="Event Image">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal untuk Foto 6 -->
+<div class="modal fade" id="imageModal6" tabindex="-1" aria-labelledby="imageModalLabel6" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="imageModalLabel6">Gambar 6</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <img src="/asset/6.jpg" class="img-fluid" alt="Event Image">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal untuk Foto 7 -->
+<div class="modal fade" id="imageModal7" tabindex="-1" aria-labelledby="imageModalLabel7" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="imageModalLabel7">Gambar 7</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <img src="/asset/7.jpg" class="img-fluid" alt="Event Image">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal untuk Foto 8 -->
+<div class="modal fade" id="imageModal8" tabindex="-1" aria-labelledby="imageModalLabel8" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="imageModalLabel8">Gambar 8</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <img src="/asset/8.jpg" class="img-fluid" alt="Event Image">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal untuk Foto 9 -->
+<div class="modal fade" id="imageModal9" tabindex="-1" aria-labelledby="imageModalLabel9" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="imageModalLabel9">Gambar 9</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <img src="/asset/9.jpg" class="img-fluid" alt="Event Image">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal untuk Foto 10 -->
+<div class="modal fade" id="imageModal10" tabindex="-1" aria-labelledby="imageModalLabel10" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="imageModalLabel10">Gambar 10</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <img src="/asset/10.jpg" class="img-fluid" alt="Event Image">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal untuk Foto 11 -->
+<div class="modal fade" id="imageModal11" tabindex="-1" aria-labelledby="imageModalLabel11" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="imageModalLabel10">Gambar 11</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <img src="/asset/11.jpg" class="img-fluid" alt="Event Image">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal untuk Foto 12 -->
+<div class="modal fade" id="imageModal12" tabindex="-1" aria-labelledby="imageModalLabel12" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="imageModalLabel10">Gambar 12</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <img src="/asset/12.jpg" class="img-fluid" alt="Event Image">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal untuk Foto 13 -->
+<div class="modal fade" id="imageModal13" tabindex="-1" aria-labelledby="imageModalLabel13" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="imageModalLabel10">Gambar 13</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <img src="/asset/13.jpg" class="img-fluid" alt="Event Image">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal untuk Foto 14 -->
+<div class="modal fade" id="imageModal14" tabindex="-1" aria-labelledby="imageModalLabel14" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="imageModalLabel10">Gambar 14</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <img src="/asset/14.jpg" class="img-fluid" alt="Event Image">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal untuk Foto 15 -->
+<div class="modal fade" id="imageModal15" tabindex="-1" aria-labelledby="imageModalLabel15" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="imageModalLabel10">Gambar 15</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <img src="/asset/15.jpg" class="img-fluid" alt="Event Image">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal untuk Foto 16 -->
+<div class="modal fade" id="imageModal16" tabindex="-1" aria-labelledby="imageModalLabel16" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="imageModalLabel10">Gambar 16</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <img src="/asset/16.jpg" class="img-fluid" alt="Event Image">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal untuk Foto 17 -->
+<div class="modal fade" id="imageModal17" tabindex="-1" aria-labelledby="imageModalLabel17" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="imageModalLabel10">Gambar 17</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <img src="/asset/17.jpg" class="img-fluid" alt="Event Image">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal untuk Foto 18 -->
+<div class="modal fade" id="imageModal18" tabindex="-1" aria-labelledby="imageModalLabel18" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="imageModalLabel10">Gambar 18</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <img src="/asset/18.jpg" class="img-fluid" alt="Event Image">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+     <!-- Footer yang berisi informasi mengenai perusahaan, navigasi halaman, dan akun sosial media -->
+     <footer id="footer">
+      <div class="container">
+          <div class="footer-bottom d-flex flex-column flex-md-row justify-content-between align-items-center">
+              <p>&copy; PKL Teknik Informatika ITERA @ 2024. All rights reserved.</p>
+          </div>
+      </div>
+  </footer>
+
+  <script src="server.js"></script>
+
+  <script>
+    // Fungsi untuk mendapatkan jumlah kunjungan dari server
+    async function getVisits() {
+        const response = await fetch('http://localhost:5500/visits');
+        const data = await response.json();
+        return data.visits;
+    }
+
+    // Fungsi untuk menambah jumlah kunjungan ke server
+    async function addVisit() {
+        const response = await fetch('http://localhost:5500/visit', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        const data = await response.json();
+        return data.visits;
+    }
+
+    // Mendapatkan dan menampilkan jumlah kunjungan saat halaman dimuat
+    (async () => {
+        const visits = await getVisits();
+        document.getElementById('visitCount').innerText = visits;
+
+        // Menambah jumlah kunjungan saat halaman dimuat
+        const newVisits = await addVisit();
+        document.getElementById('visitCount').innerText = newVisits;
+    })();
+</script>
+
+  </body>
+</html>
